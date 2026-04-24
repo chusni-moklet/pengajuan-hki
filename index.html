@@ -161,11 +161,11 @@
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label for="fileSuratPernyataan" class="relative cursor-pointer bg-white rounded-md font-medium text-telkom-red hover:text-red-500 px-1">
                                                 <span>Pilih file</span>
-                                                <input id="fileSuratPernyataan" type="file" accept=".pdf,image/jpeg,image/png,image/jpg" class="sr-only" required>
+                                                <input id="fileSuratPernyataan" type="file" accept=".pdf" class="sr-only" required>
                                             </label>
                                             <p class="pl-1">atau drag and drop</p>
                                         </div>
-                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 5MB</p>
+                                        <p class="text-xs text-gray-500">PDF up to 5MB</p>
                                         <p id="fileSuratPernyataanDisplay" class="text-sm font-semibold text-telkom-dark mt-2 hidden"></p>
                                     </div>
                                 </div>
@@ -182,11 +182,11 @@
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label for="fileSuratIzin" class="relative cursor-pointer bg-white rounded-md font-medium text-telkom-red hover:text-red-500 px-1">
                                                 <span>Pilih file</span>
-                                                <input id="fileSuratIzin" type="file" accept=".pdf,image/jpeg,image/png,image/jpg" class="sr-only" required>
+                                                <input id="fileSuratIzin" type="file" accept=".pdf" class="sr-only" required>
                                             </label>
                                             <p class="pl-1">atau drag and drop</p>
                                         </div>
-                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 5MB</p>
+                                        <p class="text-xs text-gray-500">PDF up to 5MB</p>
                                         <p id="fileSuratIzinDisplay" class="text-sm font-semibold text-telkom-dark mt-2 hidden"></p>
                                     </div>
                                 </div>
@@ -640,6 +640,10 @@
                 Swal.fire('Error', 'Harap upload Surat Pernyataan Karya!', 'error');
                 return;
             }
+            if (fileSuratPernyataan.type !== 'application/pdf') {
+                Swal.fire('Error', 'Surat Pernyataan harus berformat PDF!', 'error');
+                return;
+            }
             if (fileSuratPernyataan.size > 5 * 1024 * 1024) {
                 Swal.fire('Error', 'Ukuran Surat Pernyataan terlalu besar! Maksimal 5MB.', 'error');
                 return;
@@ -648,6 +652,10 @@
             const fileSuratIzin = document.getElementById('fileSuratIzin').files[0];
             if (!fileSuratIzin) {
                 Swal.fire('Error', 'Harap upload Surat Izin Orang Tua!', 'error');
+                return;
+            }
+            if (fileSuratIzin.type !== 'application/pdf') {
+                Swal.fire('Error', 'Surat Izin Orang Tua harus berformat PDF!', 'error');
                 return;
             }
             if (fileSuratIzin.size > 5 * 1024 * 1024) {
