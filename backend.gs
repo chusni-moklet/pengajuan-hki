@@ -28,10 +28,11 @@ function doPost(e) {
         "Jenis Kelamin", "NPWP", "Alamat", "Negara", "Provinsi", 
         "Kabupaten/Kota", "Kecamatan", "Kelurahan", "Kode Pos",
         "Jenis Permohonan", "Jenis Ciptaan", "Sub-Jenis Ciptaan", 
-        "Tanggal Diumumkan", "Judul", "Uraian Singkat", "Data Anggota", "URL KTP"
+        "Tanggal Diumumkan", "Judul", "Uraian Singkat", "Data Anggota", 
+        "URL KTP", "URL Surat Pernyataan", "URL Surat Izin Ortu"
       ]);
       // Styling header
-      sheet.getRange(1, 1, 1, 22).setFontWeight("bold").setBackground("#E3000F").setFontColor("white");
+      sheet.getRange(1, 1, 1, 24).setFontWeight("bold").setBackground("#E3000F").setFontColor("white");
       sheet.setFrozenRows(1);
     }
     
@@ -58,6 +59,26 @@ function doPost(e) {
     // Mendapatkan URL file
     const fileUrl = file.getUrl();
     
+    // Upload Surat Pernyataan
+    const blobSuratPernyataan = Utilities.newBlob(
+      Utilities.base64Decode(data.suratPernyataanData), 
+      data.suratPernyataanMimeType, 
+      data.judul + "_SuratPernyataan_" + data.suratPernyataanFileName
+    );
+    const fileSuratPernyataan = folder.createFile(blobSuratPernyataan);
+    const suratPernyataanUrl = fileSuratPernyataan.getUrl();
+    Logger.log("Surat Pernyataan disimpan: " + suratPernyataanUrl);
+
+    // Upload Surat Izin Orang Tua
+    const blobSuratIzin = Utilities.newBlob(
+      Utilities.base64Decode(data.suratIzinData), 
+      data.suratIzinMimeType, 
+      data.judul + "_SuratIzin_" + data.suratIzinFileName
+    );
+    const fileSuratIzin = folder.createFile(blobSuratIzin);
+    const suratIzinUrl = fileSuratIzin.getUrl();
+    Logger.log("Surat Izin disimpan: " + suratIzinUrl);
+    
     // Menyisipkan data pemohon utama ke baris baru di Spreadsheet
     sheet.appendRow([
       new Date(),           // Timestamp
@@ -81,7 +102,9 @@ function doPost(e) {
       data.judul,
       data.uraianSingkat,
       "Pemohon Utama",
-      fileUrl
+      fileUrl,
+      suratPernyataanUrl,
+      suratIzinUrl
     ]);
 
     // Menyisipkan data anggota tambahan, masing-masing satu baris
@@ -109,7 +132,9 @@ function doPost(e) {
           data.judul,
           data.uraianSingkat,
           "Anggota " + (idx + 1),
-          fileUrl
+          fileUrl,
+          suratPernyataanUrl,
+          suratIzinUrl
         ]);
       });
     }

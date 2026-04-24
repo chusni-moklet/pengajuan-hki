@@ -147,6 +147,51 @@
                             <label class="md:w-1/3 text-sm font-medium text-gray-700 pt-3">Uraian Singkat <span class="text-telkom-red">*</span></label>
                             <textarea id="uraianSingkat" rows="4" required class="flex-1 w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none"></textarea>
                         </div>
+
+                        <!-- Upload Surat Pernyataan Karya -->
+                        <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-6">
+                            <label class="md:w-1/3 text-sm font-medium text-gray-700 pt-3">
+                                Surat Pernyataan Karya <span class="text-telkom-red">*</span>
+                                <a href="https://docs.google.com/document/d/1_KkJZVA7STuzSKw2UibJKxp91fA00IIB/edit" target="_blank" class="block text-xs text-blue-500 hover:underline mt-1 font-normal">📄 Lihat contoh dokumen</a>
+                            </label>
+                            <div class="flex-1 w-full">
+                                <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-telkom-red transition-colors bg-gray-50">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        <div class="flex text-sm text-gray-600 justify-center">
+                                            <label for="fileSuratPernyataan" class="relative cursor-pointer bg-white rounded-md font-medium text-telkom-red hover:text-red-500 px-1">
+                                                <span>Pilih file</span>
+                                                <input id="fileSuratPernyataan" type="file" accept=".pdf,image/jpeg,image/png,image/jpg" class="sr-only" required>
+                                            </label>
+                                            <p class="pl-1">atau drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 5MB</p>
+                                        <p id="fileSuratPernyataanDisplay" class="text-sm font-semibold text-telkom-dark mt-2 hidden"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Surat Izin Orang Tua -->
+                        <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-6">
+                            <label class="md:w-1/3 text-sm font-medium text-gray-700 pt-3">Surat Izin Orang Tua <span class="text-telkom-red">*</span><a href="https://docs.google.com/document/d/1u3XS7MkwMU46wzHyn2U3JpdRgwy70mGu" target="_blank" class="block text-xs text-blue-500 hover:underline mt-1 font-normal">📄 Lihat contoh dokumen</a></label>
+                            <div class="flex-1 w-full">
+                                <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-telkom-red transition-colors bg-gray-50">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        <div class="flex text-sm text-gray-600 justify-center">
+                                            <label for="fileSuratIzin" class="relative cursor-pointer bg-white rounded-md font-medium text-telkom-red hover:text-red-500 px-1">
+                                                <span>Pilih file</span>
+                                                <input id="fileSuratIzin" type="file" accept=".pdf,image/jpeg,image/png,image/jpg" class="sr-only" required>
+                                            </label>
+                                            <p class="pl-1">atau drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 5MB</p>
+                                        <p id="fileSuratIzinDisplay" class="text-sm font-semibold text-telkom-dark mt-2 hidden"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Action Buttons Step 1 -->
@@ -551,6 +596,20 @@
             }
         });
 
+        document.getElementById('fileSuratPernyataan').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const display = document.getElementById('fileSuratPernyataanDisplay');
+            if (fileName) { display.textContent = 'File terpilih: ' + fileName; display.classList.remove('hidden'); }
+            else { display.classList.add('hidden'); }
+        });
+
+        document.getElementById('fileSuratIzin').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const display = document.getElementById('fileSuratIzinDisplay');
+            if (fileName) { display.textContent = 'File terpilih: ' + fileName; display.classList.remove('hidden'); }
+            else { display.classList.add('hidden'); }
+        });
+
         // Form Submission
         document.getElementById('hkiForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -572,7 +631,27 @@
 
             // Check file size (max 2MB)
             if (file.size > 2 * 1024 * 1024) {
-                Swal.fire('Error', 'Ukuran file terlalu besar! Maksimal 2MB.', 'error');
+                Swal.fire('Error', 'Ukuran file KTP terlalu besar! Maksimal 2MB.', 'error');
+                return;
+            }
+
+            const fileSuratPernyataan = document.getElementById('fileSuratPernyataan').files[0];
+            if (!fileSuratPernyataan) {
+                Swal.fire('Error', 'Harap upload Surat Pernyataan Karya!', 'error');
+                return;
+            }
+            if (fileSuratPernyataan.size > 5 * 1024 * 1024) {
+                Swal.fire('Error', 'Ukuran Surat Pernyataan terlalu besar! Maksimal 5MB.', 'error');
+                return;
+            }
+
+            const fileSuratIzin = document.getElementById('fileSuratIzin').files[0];
+            if (!fileSuratIzin) {
+                Swal.fire('Error', 'Harap upload Surat Izin Orang Tua!', 'error');
+                return;
+            }
+            if (fileSuratIzin.size > 5 * 1024 * 1024) {
+                Swal.fire('Error', 'Ukuran Surat Izin terlalu besar! Maksimal 5MB.', 'error');
                 return;
             }
 
@@ -583,17 +662,17 @@
             submitBtn.querySelector('span').textContent = 'Memproses...';
 
             try {
-                // Convert file to Base64
-                const base64File = await new Promise((resolve, reject) => {
+                // Convert files to Base64
+                const toBase64 = (f) => new Promise((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.onload = () => {
-                        // Extract base64 part only
-                        const base64String = reader.result.split(',')[1];
-                        resolve(base64String);
-                    };
-                    reader.onerror = error => reject(error);
-                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(f);
                 });
+
+                const base64File = await toBase64(file);
+                const base64SuratPernyataan = await toBase64(fileSuratPernyataan);
+                const base64SuratIzin = await toBase64(fileSuratIzin);
 
                 // Collect Anggota Data sebagai array
                 const anggotaList = [];
@@ -647,7 +726,13 @@
                     anggotaList: anggotaList,
                     fileName: file.name,
                     mimeType: file.type,
-                    fileData: base64File
+                    fileData: base64File,
+                    suratPernyataanFileName: fileSuratPernyataan.name,
+                    suratPernyataanMimeType: fileSuratPernyataan.type,
+                    suratPernyataanData: base64SuratPernyataan,
+                    suratIzinFileName: fileSuratIzin.name,
+                    suratIzinMimeType: fileSuratIzin.type,
+                    suratIzinData: base64SuratIzin
                 };
 
                 // Send POST request - no-cors diperlukan untuk Google Apps Script
@@ -688,6 +773,8 @@
                     // Reset form and go back to step 1
                     document.getElementById('hkiForm').reset();
                     document.getElementById('fileNameDisplay').classList.add('hidden');
+                    document.getElementById('fileSuratPernyataanDisplay').classList.add('hidden');
+                    document.getElementById('fileSuratIzinDisplay').classList.add('hidden');
                     prevStep();
                 });
 
