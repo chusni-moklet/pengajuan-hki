@@ -597,17 +597,37 @@
         });
 
         document.getElementById('fileSuratPernyataan').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name;
+            const file = e.target.files[0];
             const display = document.getElementById('fileSuratPernyataanDisplay');
-            if (fileName) { display.textContent = 'File terpilih: ' + fileName; display.classList.remove('hidden'); }
-            else { display.classList.add('hidden'); }
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    Swal.fire('Error', 'Surat Pernyataan harus berformat PDF!', 'error');
+                    this.value = '';
+                    display.classList.add('hidden');
+                    return;
+                }
+                display.textContent = 'File terpilih: ' + file.name;
+                display.classList.remove('hidden');
+            } else {
+                display.classList.add('hidden');
+            }
         });
 
         document.getElementById('fileSuratIzin').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name;
+            const file = e.target.files[0];
             const display = document.getElementById('fileSuratIzinDisplay');
-            if (fileName) { display.textContent = 'File terpilih: ' + fileName; display.classList.remove('hidden'); }
-            else { display.classList.add('hidden'); }
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    Swal.fire('Error', 'Surat Izin Orang Tua harus berformat PDF!', 'error');
+                    this.value = '';
+                    display.classList.add('hidden');
+                    return;
+                }
+                display.textContent = 'File terpilih: ' + file.name;
+                display.classList.remove('hidden');
+            } else {
+                display.classList.add('hidden');
+            }
         });
 
         // Form Submission
