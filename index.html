@@ -392,6 +392,10 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             loadProvinces(document.getElementById('provinsi'));
+
+            // Batasi tanggal diumumkan: hanya hari ini dan sebelumnya
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggalDiumumkan').setAttribute('max', today);
         });
 
         async function loadProvinces(selectElement) {
