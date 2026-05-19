@@ -69,15 +69,20 @@ function doPost(e) {
     const suratPernyataanUrl = fileSuratPernyataan.getUrl();
     Logger.log("Surat Pernyataan disimpan: " + suratPernyataanUrl);
 
-    // Upload Surat Izin Orang Tua
-    const blobSuratIzin = Utilities.newBlob(
-      Utilities.base64Decode(data.suratIzinData), 
-      data.suratIzinMimeType, 
-      data.judul + "_SuratIzin_" + data.suratIzinFileName
-    );
-    const fileSuratIzin = folder.createFile(blobSuratIzin);
-    const suratIzinUrl = fileSuratIzin.getUrl();
-    Logger.log("Surat Izin disimpan: " + suratIzinUrl);
+    // Upload Surat Izin Orang Tua (opsional, bisa null jika form dimatikan)
+    let suratIzinUrl = '-';
+    if (data.suratIzinData) {
+      const blobSuratIzin = Utilities.newBlob(
+        Utilities.base64Decode(data.suratIzinData), 
+        data.suratIzinMimeType, 
+        data.judul + "_SuratIzin_" + data.suratIzinFileName
+      );
+      const fileSuratIzin = folder.createFile(blobSuratIzin);
+      suratIzinUrl = fileSuratIzin.getUrl();
+      Logger.log("Surat Izin disimpan: " + suratIzinUrl);
+    } else {
+      Logger.log("Surat Izin tidak disertakan (form dinonaktifkan).");
+    }
     
     // Menyisipkan data pemohon utama ke baris baru di Spreadsheet
     sheet.appendRow([
