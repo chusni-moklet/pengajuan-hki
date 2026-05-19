@@ -613,22 +613,8 @@
             }
         });
 
-        document.getElementById('fileSuratIzin').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const display = document.getElementById('fileSuratIzinDisplay');
-            if (file) {
-                if (file.type !== 'application/pdf') {
-                    Swal.fire('Error', 'Surat Izin Orang Tua harus berformat PDF!', 'error');
-                    this.value = '';
-                    display.classList.add('hidden');
-                    return;
-                }
-                display.textContent = 'File terpilih: ' + file.name;
-                display.classList.remove('hidden');
-            } else {
-                display.classList.add('hidden');
-            }
-        });
+        // Event listener fileSuratIzin dinonaktifkan karena form surat izin orang tua dimatikan
+        // document.getElementById('fileSuratIzin').addEventListener('change', ...);
 
         // Form Submission
         document.getElementById('hkiForm').addEventListener('submit', async function(e) {
@@ -669,19 +655,7 @@
                 return;
             }
 
-            const fileSuratIzin = document.getElementById('fileSuratIzin').files[0];
-            if (!fileSuratIzin) {
-                Swal.fire('Error', 'Harap upload Surat Izin Orang Tua!', 'error');
-                return;
-            }
-            if (fileSuratIzin.type !== 'application/pdf') {
-                Swal.fire('Error', 'Surat Izin Orang Tua harus berformat PDF!', 'error');
-                return;
-            }
-            if (fileSuratIzin.size > 5 * 1024 * 1024) {
-                Swal.fire('Error', 'Ukuran Surat Izin terlalu besar! Maksimal 5MB.', 'error');
-                return;
-            }
+            // Validasi Surat Izin Orang Tua dinonaktifkan (form dimatikan)
 
             // UI Loading state
             submitBtn.disabled = true;
@@ -700,7 +674,6 @@
 
                 const base64File = await toBase64(file);
                 const base64SuratPernyataan = await toBase64(fileSuratPernyataan);
-                const base64SuratIzin = await toBase64(fileSuratIzin);
 
                 // Collect Anggota Data sebagai array
                 const anggotaList = [];
@@ -758,9 +731,9 @@
                     suratPernyataanFileName: fileSuratPernyataan.name,
                     suratPernyataanMimeType: fileSuratPernyataan.type,
                     suratPernyataanData: base64SuratPernyataan,
-                    suratIzinFileName: fileSuratIzin.name,
-                    suratIzinMimeType: fileSuratIzin.type,
-                    suratIzinData: base64SuratIzin
+                    suratIzinFileName: null,
+                    suratIzinMimeType: null,
+                    suratIzinData: null
                 };
 
                 // Send POST request - no-cors diperlukan untuk Google Apps Script
@@ -802,7 +775,6 @@
                     document.getElementById('hkiForm').reset();
                     document.getElementById('fileNameDisplay').classList.add('hidden');
                     document.getElementById('fileSuratPernyataanDisplay').classList.add('hidden');
-                    document.getElementById('fileSuratIzinDisplay').classList.add('hidden');
                     prevStep();
                 });
 
