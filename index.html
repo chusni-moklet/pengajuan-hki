@@ -730,7 +730,28 @@
                     body: JSON.stringify(payload)
                 });
 
-                // Dengan no-cors, response selalu opaque — asumsikan berhasil setelah terkirim
+                // Dengan no-cors, response selalu opaque
+                // Verifikasi via GET dengan retry hingga 15 detik
+                let verified = false;
+                for (let attempt = 0; attempt < 5; attempt++) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    try {
+                        const verifyUrl = SCRIPT_URL + '?action=verify&nik=' + encodeURIComponent(payload.nik);
+                        const verifyRes = await fetch(verifyUrl);
+                        const verifyData = await verifyRes.json();
+                        if (verifyData.found === true) {
+                            verified = true;
+                            break;
+                        }
+                    } catch(verifyErr) {
+                        // lanjut retry
+                    }
+                }
+
+                if (!verified) {
+                    throw new Error('Data tidak tersimpan setelah beberapa percobaan. Pastikan Apps Script sudah di-redeploy dengan versi terbaru, lalu cek Execution Log di Apps Script.');
+                }
+
                 Swal.fire({
                     title: 'Berhasil!',
                     text: 'Data pendataan HKI telah berhasil disimpan.',
